@@ -52,11 +52,11 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
                 className="text-[clamp(1.5rem,4vw,2.5rem)] leading-tight"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                <BlurText text="Hi, this is Alen" delay={0} />
+                <BlurText text="Hey there" delay={0} />
               </h1>
               <p className="text-text-secondary text-[clamp(0.875rem,1.5vw,1.125rem)]">
                 <BlurText
-                  text="welcome to my corner of the internet :)"
+                  text="let's take a look around, shall we?"
                   delay={0.6}
                   onComplete={() => {
                     setTimeout(() => {
