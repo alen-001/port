@@ -1,0 +1,37 @@
+{
+  "openGraph": {
+    "title": "25-26 life update",
+    "url": "https://picnic.katherine-le.com/",
+    "image": ".assets/thumb.png"
+  },
+  "twitter": {},
+  "description": null,
+  "canonical": null,
+  "themeColor": null,
+  "viewport": "width=device-width, initial-scale=1.0",
+  "favicons": [
+    {
+      "rel": "icon",
+      "href": "https://picnic.katherine-le.com/favicon-32x32-makgdnba.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "rel": "icon",
+      "href": "https://picnic.katherine-le.com/favicon-16x16-hswch75x.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ],
+  "manifest": null,
+  "structuredData": [],
+  "score": {
+    "hasOg": true,
+    "hasTwitter": false,
+    "hasDescription": false,
+    "hasCanonical": false,
+    "hasStructuredData": false,
+    "hasFavicon": true,
+    "hasThemeColor": false
+  }
+}

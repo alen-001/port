@@ -1,0 +1,39 @@
+{
+  "tone": "neutral",
+  "pronoun": "third-person",
+  "headingStyle": "unknown",
+  "headingLengthClass": "tight",
+  "ctaVerbs": [
+    {
+      "value": "toggle",
+      "count": 1
+    },
+    {
+      "value": "linkedin",
+      "count": 1
+    },
+    {
+      "value": "instagram",
+      "count": 1
+    }
+  ],
+  "buttonPatterns": [
+    {
+      "value": "toggle site audio",
+      "count": 1
+    },
+    {
+      "value": "linkedin",
+      "count": 1
+    },
+    {
+      "value": "instagram",
+      "count": 1
+    }
+  ],
+  "sampleHeadings": [],
+  "stats": {
+    "buttons": 3,
+    "headings": 0
+  }
+}

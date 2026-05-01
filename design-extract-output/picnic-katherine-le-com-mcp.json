@@ -1,0 +1,172 @@
+{
+  "colors": {
+    "all": [
+      {
+        "hex": "#453011",
+        "rgb": {
+          "r": 69,
+          "g": 48,
+          "b": 17,
+          "a": 1
+        },
+        "hsl": {
+          "h": 36,
+          "s": 60,
+          "l": 17
+        },
+        "count": 146,
+        "contexts": [
+          "text",
+          "border"
+        ]
+      },
+      {
+        "hex": "#000000",
+        "rgb": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 1
+        },
+        "hsl": {
+          "h": 0,
+          "s": 0,
+          "l": 0
+        },
+        "count": 28,
+        "contexts": [
+          "text",
+          "border"
+        ]
+      },
+      {
+        "hex": "#f9f6f4",
+        "rgb": {
+          "r": 249,
+          "g": 246,
+          "b": 244,
+          "a": 1
+        },
+        "hsl": {
+          "h": 24,
+          "s": 29,
+          "l": 97
+        },
+        "count": 16,
+        "contexts": [
+          "text",
+          "border"
+        ]
+      },
+      {
+        "hex": "#efab56",
+        "rgb": {
+          "r": 239,
+          "g": 171,
+          "b": 86,
+          "a": 1
+        },
+        "hsl": {
+          "h": 33,
+          "s": 83,
+          "l": 64
+        },
+        "count": 2,
+        "contexts": [
+          "text",
+          "border"
+        ]
+      }
+    ]
+  },
+  "regions": [],
+  "componentClusters": [
+    {
+      "kind": "button",
+      "structuralHash": "button>img>span",
+      "instanceCount": 1,
+      "variants": [
+        {
+          "css": {
+            "background": "color(srgb 0.976471 0.964706 0.956863 / 0.15)",
+            "color": "rgb(249, 246, 244)",
+            "padding": "12px 12px 12px 12px",
+            "borderRadius": "9999px",
+            "border": "1px solid rgb(249, 246, 244)",
+            "fontSize": "11.904px",
+            "fontWeight": "650"
+          },
+          "instanceCount": 1
+        }
+      ]
+    },
+    {
+      "kind": "button",
+      "structuralHash": "a",
+      "instanceCount": 2,
+      "variants": [
+        {
+          "css": {
+            "background": "color(srgb 0.976471 0.964706 0.956863 / 0.15)",
+            "color": "rgb(249, 246, 244)",
+            "padding": "24px 24.8px 24px 24.8px",
+            "borderRadius": "9999px",
+            "border": "1px solid rgb(249, 246, 244)",
+            "fontSize": "11.904px",
+            "fontWeight": "650"
+          },
+          "instanceCount": 2
+        }
+      ]
+    }
+  ],
+  "accessibility": {
+    "remediation": []
+  },
+  "cssHealth": {
+    "sheets": [
+      {
+        "url": "https://picnic.katherine-le.com/index-997nf6en.css",
+        "totalBytes": 182258,
+        "usedBytes": 16902,
+        "unusedBytes": 165356,
+        "unusedPercent": 91
+      }
+    ],
+    "totalBytes": 182258,
+    "usedBytes": 16902,
+    "unusedBytes": 165356,
+    "unusedPercent": 91,
+    "importantCount": 0,
+    "duplicates": 239,
+    "vendorPrefixes": {
+      "webkit": 3,
+      "moz": 2,
+      "ms": 0,
+      "o": 0
+    },
+    "keyframes": [
+      {
+        "name": "scene-loading-meter",
+        "steps": 2
+      }
+    ],
+    "specificity": {
+      "max": [
+        0,
+        3,
+        1
+      ],
+      "average": [
+        0,
+        1.17,
+        0.14
+      ],
+      "count": 296
+    },
+    "issues": [
+      "239 duplicate declarations",
+      "91% unused CSS"
+    ]
+  }
+}

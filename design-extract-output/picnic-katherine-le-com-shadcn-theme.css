@@ -1,0 +1,16 @@
+/* shadcn/ui Theme — extracted from https://picnic.katherine-le.com/ */
+/* Paste into your globals.css */
+
+@layer base {
+  :root {
+    --foreground: 0 0% 0%;
+    --primary: 33 83% 64%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 36 60% 17%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 24 29% 97%;
+    --muted-foreground: 0 0% 0%;
+    --border: 24 29% 97%;
+    --radius: 12px;
+  }
+}

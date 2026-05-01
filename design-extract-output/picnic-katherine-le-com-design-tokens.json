@@ -1,0 +1,157 @@
+{
+  "$metadata": {
+    "generator": "designlang",
+    "version": "7.0.0",
+    "spec": "https://design-tokens.github.io/community-group/format/",
+    "source": "https://picnic.katherine-le.com/",
+    "generatedAt": "2026-05-01T11:02:37.703Z"
+  },
+  "primitive": {
+    "color": {
+      "brand": {
+        "primary": {
+          "$value": "#efab56",
+          "$type": "color"
+        },
+        "secondary": {
+          "$value": "#453011",
+          "$type": "color"
+        }
+      },
+      "neutral": {
+        "n100": {
+          "$value": "#000000",
+          "$type": "color"
+        },
+        "n200": {
+          "$value": "#f9f6f4",
+          "$type": "color"
+        }
+      },
+      "background": {},
+      "text": {
+        "text0": {
+          "$value": "#000000",
+          "$type": "color"
+        },
+        "text1": {
+          "$value": "#453011",
+          "$type": "color"
+        },
+        "text2": {
+          "$value": "#f9f6f4",
+          "$type": "color"
+        },
+        "text3": {
+          "$value": "#efab56",
+          "$type": "color"
+        }
+      }
+    },
+    "spacing": {
+      "s0": {
+        "$value": "6px",
+        "$type": "dimension"
+      },
+      "s1": {
+        "$value": "24px",
+        "$type": "dimension"
+      },
+      "s2": {
+        "$value": "51px",
+        "$type": "dimension"
+      },
+      "s3": {
+        "$value": "64px",
+        "$type": "dimension"
+      }
+    },
+    "radius": {
+      "r0": {
+        "$value": "12px",
+        "$type": "dimension"
+      },
+      "r1": {
+        "$value": "9999px",
+        "$type": "dimension"
+      }
+    },
+    "shadow": {
+      "sh0": {
+        "$value": "rgba(32, 19, 8, 0.28) 0px 12px 28px 0px, rgba(234, 187, 93, 0.18) 0px 0px 18px 0px",
+        "$type": "shadow"
+      },
+      "sh1": {
+        "$value": "rgba(23, 15, 7, 0.24) 0px 24px 60px 0px",
+        "$type": "shadow"
+      }
+    },
+    "fontFamily": {
+      "f0": {
+        "$value": "Geist",
+        "$type": "fontFamily"
+      },
+      "f1": {
+        "$value": "Times",
+        "$type": "fontFamily"
+      },
+      "f2": {
+        "$value": "Arial",
+        "$type": "fontFamily"
+      },
+      "f3": {
+        "$value": "ENDisplay",
+        "$type": "fontFamily"
+      }
+    }
+  },
+  "semantic": {
+    "color": {
+      "action": {
+        "primary": {
+          "$value": "{primitive.color.brand.primary}",
+          "$type": "color"
+        },
+        "secondary": {
+          "$value": "{primitive.color.brand.secondary}",
+          "$type": "color"
+        }
+      },
+      "surface": {
+        "default": {
+          "$value": "{primitive.color.background.bg0}",
+          "$type": "color"
+        }
+      },
+      "text": {
+        "body": {
+          "$value": "{primitive.color.text.text0}",
+          "$type": "color"
+        }
+      }
+    },
+    "typography": {
+      "body": {
+        "$value": {
+          "fontFamily": "Geist",
+          "fontSize": "21.28px",
+          "fontWeight": "350",
+          "lineHeight": "25.536px"
+        },
+        "$type": "typography"
+      }
+    },
+    "radius": {
+      "control": {
+        "$value": "{primitive.radius.r0}",
+        "$type": "dimension"
+      }
+    },
+    "shadow": {
+      "elevated": {
+        "$value": "{primitive.shadow.sh0}",
+        "$type": "shadow"
+      }
+    }
+  }
+}
