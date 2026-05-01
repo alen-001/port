@@ -30,7 +30,7 @@ export function Hero({ visible }: { visible: boolean }) {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            ee by degree, swe by trade
+            Hi, I’m Alen :) welcome to a slice of my world on the internet.
           </motion.p>
 
           <h1
@@ -85,6 +85,15 @@ export function Hero({ visible }: { visible: boolean }) {
               >
                 email
               </a>
+              <span className="text-text-secondary/30">|</span>
+              <a
+                href="https://www.linkedin.com/in/alen-shaju/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-text-primary transition-colors duration-300"
+              >
+                linkedin
+              </a>
             </div>
           </ScrollReveal>
         </div>
@@ -138,13 +147,13 @@ export function Hero({ visible }: { visible: boolean }) {
                 className="object-cover"
                 sizes="100vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-bg via-bg/30 to-transparent" />
               <div className="absolute bottom-8 left-6 md:left-12 right-6 md:right-12">
                 <h2
                   className="text-[clamp(2.5rem,8vw,6rem)] leading-[0.85] tracking-tight italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  <SplitText text="a little about me" />
+                  <SplitText text="a bit about me" />
                 </h2>
               </div>
             </div>
@@ -176,13 +185,13 @@ export function Hero({ visible }: { visible: boolean }) {
                 className="text-[clamp(1.5rem,3vw,2.25rem)] leading-[1.15] tracking-tight"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                Electrical engineering student at{" "}
-                <span className="italic text-text-secondary">NSUT Delhi</span>{" "}
-                who ended up writing software for a living.
+                I love making things appear out of thin air—whether it’s software, music, or art. There’s a certain magic in building, tinkering, and experimenting. As someone once said, “The human, for once, felt like a god in his small world.” I don’t aim to be one, but I do find joy in creating and reasoning about how things work.
               </p>
               <p className="text-text-secondary text-[clamp(0.9rem,1.1vw,1.05rem)] leading-relaxed">
-                Currently building things at GoDaddy. Before that, Mahindra
-                Logistics and House Of EdTech.
+                Professionally, I’m a Software Engineer Intern at <span className="italic text-text-secondary">GoDaddy</span>. Previously, I interned at Mahindra Logistics and House Of EdTech. I hold a degree in Electrical Engineering from <span className="italic text-text-secondary">NSUT Delhi</span>—though my curiosity soon led me to software engineering, thanks to a lifelong itch to experiment and a bit of high school programming.
+              </p>
+              <p className="text-text-secondary text-[clamp(0.9rem,1.1vw,1.05rem)] leading-relaxed">
+                My main experience is in full-stack development, mostly in the JavaScript/TypeScript ecosystem (sigh). Lately, I’ve been exploring Go and following the latest in AI and ML.
               </p>
             </ScrollReveal>
 
@@ -198,16 +207,12 @@ export function Hero({ visible }: { visible: boolean }) {
                       music
                     </span>
                     <p className="text-text-secondary text-[0.85rem] leading-relaxed">
-                      I produce stuff under{" "}
-                      <a
+                      I produce music as <a
                         href="https://soundcloud.com/neutraguy"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-text-primary underline decoration-accent-warm/40 underline-offset-2 hover:decoration-accent-warm transition-colors duration-300"
-                      >
-                        neu
-                      </a>
-                      . Mostly beats, sometimes something weirder.
+                      >neu</a>—mostly electronic, always experimental.
                     </p>
                   </div>
                   <div className="flex flex-col gap-3">
@@ -218,7 +223,7 @@ export function Hero({ visible }: { visible: boolean }) {
                       chess
                     </span>
                     <p className="text-text-secondary text-[0.85rem] leading-relaxed">
-                      The only war where nobody dies and everyone overthinks.
+                      The only war where nobody dies and everyone overthinks. It keeps my mind sharp and humble.
                     </p>
                   </div>
                   <div className="flex flex-col gap-3">
@@ -229,7 +234,7 @@ export function Hero({ visible }: { visible: boolean }) {
                       gym
                     </span>
                     <p className="text-text-secondary text-[0.85rem] leading-relaxed">
-                      The one thing that makes sense when nothing else does.
+                      The one thing that always makes sense when nothing else does.
                     </p>
                   </div>
                 </div>
@@ -258,8 +263,7 @@ export function Hero({ visible }: { visible: boolean }) {
             <div className="md:col-span-7 md:col-start-6 mt-8">
               <ScrollReveal>
                 <p className="text-text-secondary/60 text-[clamp(0.8rem,1vw,0.9rem)] leading-relaxed italic">
-                  &ldquo;The universe is indifferent and that&apos;s kind of
-                  freeing.&rdquo;
+                  Philosophically, I find myself drawn to the school of “absurdism”—the universe is indifferent, and that’s kind of freeing.
                   <span
                     className="not-italic text-text-secondary/30 ml-3 text-[0.7rem] tracking-wider"
                     style={{ fontFamily: "var(--font-mono)" }}
