@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { useRef, useState } from "react";
 import { SplitText } from "./split-text";
 import { ScrollReveal } from "./scroll-reveal";
@@ -13,7 +13,7 @@ const zoomImages = [
     scale: [1, 4],
     width: "25vw",
     height: "25vh",
-    top: "50%",
+    top: "53%",
     left: "50%",
     translate: "-50%, -50%",
     z: 3,
@@ -173,18 +173,57 @@ export function Hero({ visible }: { visible: boolean }) {
   const scale10 = useTransform(zoomProgress, [0, 1], zoomImages[10].scale as [number, number]);
   const scales = [scale0, scale1, scale2, scale3, scale4, scale5, scale6, scale7, scale8, scale9, scale10];
 
-  // "a bit about me" text — gentle scale: starts small, ends a bit bigger than default
-  const aboutTextScale = useTransform(zoomProgress, [0, 1], [0.6, 1.15]);
+  // ─── "a bit about me" ESCAPE EFFECT ────────────────────────────────────────
+  //
+  // Phase 1 (zoom section, 0→0.85): text scales up from small → full, centered
+  // Phase 2 (zoom section, 0.85→1): text accelerates downward off screen bottom
+  //
+  // The about section heading starts off-screen top and slides in from there,
+  // making it feel like the same text continued its journey and settled.
 
-  // "a bit about me" text color
-  const aboutTextColor = useTransform(
+  // Scale: tiny → full size as zoom progresses
+  const escapingTextScale = useTransform(
     zoomProgress,
-    [0, 0.3, 0.5],
+    [0, 0.7, 1],
+    [0.35, 1.1, 1.1]
+  );
+
+  // Color: dark → white as background images zoom in
+  const escapingTextColor = useTransform(
+    zoomProgress,
+    [0, 0.25, 0.45],
     ["#1A1A1A", "#1A1A1A", "#FFFFFF"]
   );
 
-  // "a bit about me" text vertical drift: center → bottom
-  const aboutTextY = useTransform(zoomProgress, [0, 1], ["0%", "80%"]);
+  // Y position: centered (0%) → flies down off screen (130vh) in final 20%
+  // We use a raw pixel-ish percentage. The element is at top:50% translateY(-50%)
+  // so "0%" is truly centered. We drive it from center → bottom edge → beyond.
+  const escapingTextY = useTransform(
+    zoomProgress,
+    [0, 0.75, 1],
+    ["0vh", "10vh", "55vh"]
+  );
+
+  // Opacity: fades out right at the very end so there's no hard pop
+  const escapingTextOpacity = useTransform(
+    zoomProgress,
+    [0, 0.88, 0.97, 1],
+    [1, 1, 0, 0]
+  );
+
+  // ─── About section heading slides in from top ──────────────────────────────
+  // It enters the moment the about section starts (aboutProgress 0 → 0.06)
+  // giving the impression the text "landed" from above.
+  const aboutHeadingY = useTransform(
+    aboutProgress,
+    [0, 0.06],
+    ["-12vh", "0vh"]
+  );
+  const aboutHeadingOpacity = useTransform(
+    aboutProgress,
+    [0, 0.04, 0.06],
+    [0, 0.8, 1]
+  );
 
   // Horizontal scroll for about section (2 panels)
   const horizontalX = useTransform(aboutProgress, [0, 1], ["0%", "-50%"]);
@@ -200,7 +239,7 @@ export function Hero({ visible }: { visible: boolean }) {
 
   return (
     <>
-      {/* Hero — clean dark text, same as original */}
+      {/* Hero */}
       <section ref={heroRef} id="hero" className="relative pt-12 pb-24">
         <div className="min-h-screen flex flex-col items-center justify-center px-6">
           <div className="flex flex-col items-center gap-8 max-w-4xl w-full">
@@ -301,7 +340,7 @@ export function Hero({ visible }: { visible: boolean }) {
         </div>
       </section>
 
-      {/* Zoom parallax — replaces the old wildflowers "a bit about me" section */}
+      {/* ── Zoom parallax section ─────────────────────────────────────────── */}
       <div ref={zoomRef} className="relative" style={{ height: "300vh" }}>
         <div className="sticky top-0 h-screen overflow-hidden">
           {zoomImages.map((img, i) => (
@@ -341,244 +380,263 @@ export function Hero({ visible }: { visible: boolean }) {
             </motion.div>
           ))}
 
-          {/* "a bit about me" — starts centered, drifts to bottom on scroll */}
-          <div className="absolute top-1/2 left-0 right-0 z-20 flex justify-center pointer-events-none" style={{ transform: "translateY(-50%)" }}>
+          {/*
+           * THE ESCAPING TEXT
+           * Starts centered, scales up, then accelerates downward off the
+           * bottom edge — giving it the feeling of "falling into" the next section.
+           */}
+          <div
+            className="absolute top-1/2 left-0 right-0 z-20 flex justify-center pointer-events-none"
+            style={{ transform: "translateY(-50%)" }}
+          >
             <motion.h2
-              className="text-[clamp(2.5rem,8vw,6rem)] leading-[0.85] tracking-tight italic text-center"
+              className="text-[clamp(2.5rem,8vw,6rem)] leading-[0.85] tracking-tight italic text-center will-change-transform"
               style={{
                 fontFamily: "var(--font-serif)",
-                color: aboutTextColor,
-                scale: aboutTextScale,
-                y: aboutTextY,
+                color: escapingTextColor,
+                scale: escapingTextScale,
+                y: escapingTextY,
+                opacity: escapingTextOpacity,
               }}
-              animate={{
-                rotate: [0, -0.5, 0],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+              animate={{ rotate: [0, -0.5, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             >
-              a bit about me
+              a bit about me...
             </motion.h2>
           </div>
         </div>
       </div>
 
-      {/* About content — horizontal scroll, 2 panels */}
+      {/* ── About section — horizontal scroll, 2 panels ───────────────────── */}
       <div ref={aboutRef} className="relative" style={{ height: "300vh" }}>
-        <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-          <motion.div
-            className="flex items-center gap-24 px-16"
-            style={{ x: horizontalX }}
-          >
-            {/* Panel 1: Photo + Bio + Philosophy */}
-            <div className="flex gap-12 items-center shrink-0" style={{ width: "90vw" }}>
-              <div className="relative overflow-hidden rounded-2xl shrink-0" style={{ width: "35%", height: "70vh" }}>
-                <Image
-                  src="/images/hero/archway.jpg"
-                  alt="Alen"
-                  fill
-                  className="object-cover"
-                  sizes="35vw"
-                />
-              </div>
-              <div className="flex flex-col justify-center gap-6" style={{ width: "55%" }}>
-                <p
-                  className="text-[clamp(1.5rem,3vw,2.25rem)] leading-[1.15] tracking-tight"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  I love making things appear out of thin air—whether it&apos;s
-                  software, music, or art. There&apos;s a certain magic in
-                  building, tinkering, and experimenting. As someone once said,
-                  &ldquo;The human, for once, felt like a god in his small
-                  world.&rdquo; I don&apos;t aim to be one, but I do find joy in
-                  creating and reasoning about how things work.
-                </p>
-                <p className="text-text-secondary text-[clamp(0.9rem,1.1vw,1.05rem)] leading-relaxed">
-                  Professionally, I&apos;m a Software Engineer Intern at{" "}
-                  <span className="italic text-text-secondary">GoDaddy</span>.
-                  Previously, I interned at Mahindra Logistics and House Of
-                  EdTech. I hold a degree in Electrical Engineering from{" "}
-                  <span className="italic text-text-secondary">NSUT Delhi</span>
-                  —though my curiosity soon led me to software engineering, thanks
-                  to a lifelong itch to experiment and a bit of high school
-                  programming.
-                </p>
-                <p className="text-text-secondary text-[clamp(0.9rem,1.1vw,1.05rem)] leading-relaxed">
-                  My main experience is in full-stack development, mostly in the
-                  JavaScript/TypeScript ecosystem (sigh). Lately, I&apos;ve been
-                  exploring Go and following the latest in AI and ML.
-                </p>
-                <p className="text-text-secondary/60 text-[clamp(0.8rem,1vw,0.9rem)] leading-relaxed italic mt-2">
-                  Philosophically, I find myself drawn to the school of
-                  &ldquo;absurdism&rdquo;—the universe is indifferent, and
-                  that&apos;s kind of freeing.
-                  <span
-                    className="not-italic text-text-secondary/30 ml-3 text-[0.7rem] tracking-wider"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    — absurdist
-                  </span>
-                </p>
-              </div>
-            </div>
+        <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
 
-            {/* Panel 2: Hobbies (music expands SoundCloud on hover/click) */}
-            <div className="flex gap-16 items-start shrink-0" style={{ width: "90vw" }}>
-              <div
-                className="flex flex-col gap-3 cursor-pointer"
-                onMouseEnter={() => setMusicOpen(true)}
-                onMouseLeave={() => setMusicOpen(false)}
-                onClick={() => setMusicOpen((v) => !v)}
-              >
-                <span
-                  className="text-[clamp(3rem,6vw,5rem)] leading-none tracking-tighter"
-                  style={{ fontFamily: "var(--font-serif)" }}
+          {/*
+           * THE LANDING HEADING
+           * Appears to slide in from the top — as if it's the same text that
+           * just escaped the zoom section and has now "settled" as the heading.
+           * It sits outside the scrolling panel container so it stays fixed.
+           */}
+          <motion.h2
+            className="text-[clamp(2.5rem,8vw,6rem)] leading-[0.85] tracking-tight italic text-center shrink-0 pt-30 pb-6 z-10"
+            style={{
+              fontFamily: "var(--font-serif)",
+              y: aboutHeadingY,
+              opacity: aboutHeadingOpacity,
+            }}
+          >
+            a bit about me...
+          </motion.h2>
+
+          {/* Panels */}
+          <div className="flex-1 flex items-center overflow-hidden">
+            <motion.div
+              className="flex items-center gap-24 px-16"
+              style={{ x: horizontalX }}
+            >
+              {/* Panel 1: Photo + Bio */}
+              <div className="flex gap-12 items-center shrink-0" style={{ width: "90vw" }}>
+                <div
+                  className="relative overflow-hidden rounded-2xl shrink-0"
+                  style={{ width: "35%", height: "62vh" }}
                 >
-                  music
-                </span>
-                <p className="text-text-secondary text-[0.85rem] leading-relaxed max-w-xs">
-                  I produce music as{" "}
-                  <a
-                    href="https://soundcloud.com/neutraguy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-text-primary underline decoration-accent-warm/40 underline-offset-2 hover:decoration-accent-warm transition-colors duration-300"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    neu
-                  </a>
-                  —mostly electronic, always experimental.
-                </p>
-                <motion.div
-                  initial={false}
-                  animate={{
-                    height: musicOpen ? 166 : 0,
-                    opacity: musicOpen ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="overflow-hidden rounded-xl"
-                  style={{ width: "clamp(280px, 30vw, 400px)" }}
-                >
-                  <iframe
-                    width="100%"
-                    height="166"
-                    scrolling="no"
-                    frameBorder="no"
-                    allow="autoplay"
-                    src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Fusers%2F186060683&color=%23e8a849&auto_play=false&show_user=true&show_playcount=false&show_artwork=true&sharing=false&buying=false&download=false"
-                    title="SoundCloud Player"
-                    className="w-full"
+                  <Image
+                    src="/images/hero/archway.jpg"
+                    alt="Alen"
+                    fill
+                    className="object-cover"
+                    sizes="35vw"
                   />
-                </motion.div>
-              </div>
-              <div
-                className="flex flex-col gap-3 cursor-pointer"
-                onMouseEnter={() => setChessOpen(true)}
-                onMouseLeave={() => setChessOpen(false)}
-                onClick={() => setChessOpen((v) => !v)}
-              >
-                <span
-                  className="text-[clamp(3rem,6vw,5rem)] leading-none tracking-tighter"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  chess
-                </span>
-                <p className="text-text-secondary text-[0.85rem] leading-relaxed max-w-xs">
-                  Add me on{" "}
-                  <a
-                    href="https://www.chess.com/member/alen26"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-text-primary underline decoration-accent-warm/40 underline-offset-2 hover:decoration-accent-warm transition-colors duration-300"
-                    onClick={(e) => e.stopPropagation()}
+                </div>
+                <div className="flex flex-col justify-center gap-6" style={{ width: "55%" }}>
+                  <p
+                    className="text-[clamp(1.5rem,3vw,2.25rem)] leading-[1.15] tracking-tight"
+                    style={{ fontFamily: "var(--font-serif)" }}
                   >
-                    chess.com
-                  </a>{" "}
-                  XD
-                </p>
-                <motion.div
-                  initial={false}
-                  animate={{
-                    height: chessOpen ? 400 : 0,
-                    opacity: chessOpen ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="overflow-hidden rounded-xl"
-                  style={{ width: "clamp(280px, 30vw, 280x)" }}
-                >
-                  <iframe
-                    src="https://images.chesscomfiles.com/uploads/game-gifs/90px/green/neo/0/cc/0/0/68db9ca482246615396bff7f158609691c5dae5ab5d125505f21c4d299bf02d5.gif"
-                    width="100%"
-                    height="400"
-                    frameBorder="no"
-                    scrolling="no"
-                    title="Chess.com Profile"
-                    className="w-full"
-                  />
-                </motion.div>
+                    I love making things appear out of thin air—whether it&apos;s
+                    software, music, or art. There&apos;s a certain magic in
+                    building, tinkering, and experimenting. As someone once said,
+                    &ldquo;The human, for once, felt like a god in his small
+                    world.&rdquo; I don&apos;t aim to be one, but I do find joy in
+                    creating and reasoning about how things work.
+                  </p>
+                  <p className="text-text-secondary text-[clamp(0.9rem,1.1vw,1.05rem)] leading-relaxed">
+                    Professionally, I&apos;m a Software Engineer Intern at{" "}
+                    <span className="italic text-text-secondary">GoDaddy</span>.
+                    Previously, I interned at Mahindra Logistics and House Of
+                    EdTech. I hold a degree in Electrical Engineering from{" "}
+                    <span className="italic text-text-secondary">NSUT Delhi</span>
+                    —though my curiosity soon led me to software engineering, thanks
+                    to a lifelong itch to experiment and a bit of high school
+                    programming.
+                  </p>
+                  <p className="text-text-secondary text-[clamp(0.9rem,1.1vw,1.05rem)] leading-relaxed">
+                    My main experience is in full-stack development, mostly in the
+                    JavaScript/TypeScript ecosystem (sigh). Lately, I&apos;ve been
+                    exploring Go and following the latest in AI and ML.
+                  </p>
+                  <p className="text-text-secondary/60 text-[clamp(0.8rem,1vw,0.9rem)] leading-relaxed italic mt-2">
+                    Philosophically, I find myself drawn to the school of
+                    &ldquo;absurdism&rdquo;—the universe is indifferent, and
+                    that&apos;s kind of freeing.
+                    <span
+                      className="not-italic text-text-secondary/30 ml-3 text-[0.7rem] tracking-wider"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      — absurdist
+                    </span>
+                  </p>
+                </div>
               </div>
-              <div
-                className="flex flex-col gap-3 cursor-pointer"
-                onMouseEnter={() => setMiscOpen(true)}
-                onMouseLeave={() => setMiscOpen(false)}
-                onClick={() => setMiscOpen((v) => !v)}
-              >
-                <span
-                  className="text-[clamp(3rem,6vw,5rem)] leading-none tracking-tighter"
-                  style={{ fontFamily: "var(--font-serif)" }}
+
+              {/* Panel 2: Hobbies */}
+              <div className="flex gap-16 items-start shrink-0" style={{ width: "90vw" }}>
+                <div
+                  className="flex flex-col gap-3 cursor-pointer"
+                  onMouseEnter={() => setMusicOpen(true)}
+                  onMouseLeave={() => setMusicOpen(false)}
+                  onClick={() => setMusicOpen((v) => !v)}
                 >
-                  misc
-                </span>
-                <p className="text-text-secondary text-[0.85rem] leading-relaxed max-w-xs">
-                  I occasionally draw, cook, and workout—whatever catches my
-                  attention that week.
-                </p>
-                <motion.div
-                  initial={false}
-                  animate={{
-                    height: miscOpen ? 200 : 0,
-                    opacity: miscOpen ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="overflow-hidden rounded-xl"
-                  style={{ width: "clamp(280px, 30vw, 400px)" }}
+                  <span
+                    className="text-[clamp(3rem,6vw,5rem)] leading-none tracking-tighter"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    music
+                  </span>
+                  <p className="text-text-secondary text-[0.85rem] leading-relaxed max-w-xs">
+                    I produce music as{" "}
+                    <a
+                      href="https://soundcloud.com/neutraguy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text-primary underline decoration-accent-warm/40 underline-offset-2 hover:decoration-accent-warm transition-colors duration-300"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      neu
+                    </a>
+                    —mostly electronic, always experimental.
+                  </p>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: musicOpen ? 166 : 0, opacity: musicOpen ? 1 : 0 }}
+                    transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    className="overflow-hidden rounded-xl"
+                    style={{ width: "clamp(280px, 30vw, 400px)" }}
+                  >
+                    <iframe
+                      width="100%"
+                      height="166"
+                      scrolling="no"
+                      frameBorder="no"
+                      allow="autoplay"
+                      src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Fusers%2F186060683&color=%23e8a849&auto_play=false&show_user=true&show_playcount=false&show_artwork=true&sharing=false&buying=false&download=false"
+                      title="SoundCloud Player"
+                      className="w-full"
+                    />
+                  </motion.div>
+                </div>
+
+                <div
+                  className="flex flex-col gap-3 cursor-pointer"
+                  onMouseEnter={() => setChessOpen(true)}
+                  onMouseLeave={() => setChessOpen(false)}
+                  onClick={() => setChessOpen((v) => !v)}
                 >
-                  <div className="flex gap-2">
-                    <div className="relative w-1/3 h-[200px] rounded-lg overflow-hidden bg-surface">
-                      <Image
-                        src="/images/gallery/kerala-greenery-1.jpg"
-                        alt="Drawing"
-                        fill
-                        className="object-cover"
-                        sizes="10vw"
-                      />
+                  <span
+                    className="text-[clamp(3rem,6vw,5rem)] leading-none tracking-tighter"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    chess
+                  </span>
+                  <p className="text-text-secondary text-[0.85rem] leading-relaxed max-w-xs">
+                    Add me on{" "}
+                    <a
+                      href="https://www.chess.com/member/alen26"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text-primary underline decoration-accent-warm/40 underline-offset-2 hover:decoration-accent-warm transition-colors duration-300"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      chess.com
+                    </a>{" "}
+                    XD
+                  </p>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: chessOpen ? 400 : 0, opacity: chessOpen ? 1 : 0 }}
+                    transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    className="overflow-hidden rounded-xl"
+                    style={{ width: "clamp(280px, 30vw, 280px)" }}
+                  >
+                    <iframe
+                      src="https://images.chesscomfiles.com/uploads/game-gifs/90px/green/neo/0/cc/0/0/68db9ca482246615396bff7f158609691c5dae5ab5d125505f21c4d299bf02d5.gif"
+                      width="100%"
+                      height="400"
+                      frameBorder="no"
+                      scrolling="no"
+                      title="Chess.com Profile"
+                      className="w-full"
+                    />
+                  </motion.div>
+                </div>
+
+                <div
+                  className="flex flex-col gap-3 cursor-pointer"
+                  onMouseEnter={() => setMiscOpen(true)}
+                  onMouseLeave={() => setMiscOpen(false)}
+                  onClick={() => setMiscOpen((v) => !v)}
+                >
+                  <span
+                    className="text-[clamp(3rem,6vw,5rem)] leading-none tracking-tighter"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    misc
+                  </span>
+                  <p className="text-text-secondary text-[0.85rem] leading-relaxed max-w-xs">
+                    I occasionally draw, cook, and workout—whatever catches my
+                    attention that week.
+                  </p>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: miscOpen ? 200 : 0, opacity: miscOpen ? 1 : 0 }}
+                    transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    className="overflow-hidden rounded-xl"
+                    style={{ width: "clamp(280px, 30vw, 400px)" }}
+                  >
+                    <div className="flex gap-2">
+                      <div className="relative w-1/3 h-[200px] rounded-lg overflow-hidden bg-surface">
+                        <Image
+                          src="/images/gallery/kerala-greenery-1.jpg"
+                          alt="Drawing"
+                          fill
+                          className="object-cover"
+                          sizes="10vw"
+                        />
+                      </div>
+                      <div className="relative w-1/3 h-[200px] rounded-lg overflow-hidden bg-surface">
+                        <Image
+                          src="/images/gallery/tea-plantations.jpg"
+                          alt="Cooking"
+                          fill
+                          className="object-cover"
+                          sizes="10vw"
+                        />
+                      </div>
+                      <div className="relative w-1/3 h-[200px] rounded-lg overflow-hidden bg-surface">
+                        <Image
+                          src="/images/gallery/mossy-stream.jpg"
+                          alt="Workout"
+                          fill
+                          className="object-cover"
+                          sizes="10vw"
+                        />
+                      </div>
                     </div>
-                    <div className="relative w-1/3 h-[200px] rounded-lg overflow-hidden bg-surface">
-                      <Image
-                        src="/images/gallery/tea-plantations.jpg"
-                        alt="Cooking"
-                        fill
-                        className="object-cover"
-                        sizes="10vw"
-                      />
-                    </div>
-                    <div className="relative w-1/3 h-[200px] rounded-lg overflow-hidden bg-surface">
-                      <Image
-                        src="/images/gallery/mossy-stream.jpg"
-                        alt="Workout"
-                        fill
-                        className="object-cover"
-                        sizes="10vw"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </>
